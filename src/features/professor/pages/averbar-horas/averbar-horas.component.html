@@ -1,0 +1,67 @@
+<div class="navbar">
+  <div class="logo-container">
+    <img src="assets/img/logo-gac.png" class="logo" alt="Logo" />
+  </div>
+  <span class="title">HORAS COMPLEMENTARES</span>
+  <span style="flex: 0; display: flex; gap: 12px">
+    <button mat-icon-button>
+      <mat-icon>chat</mat-icon>
+    </button>
+
+    <button mat-icon-button>
+      <mat-icon>help_outline</mat-icon>
+    </button>
+
+    <button mat-icon-button>
+      <mat-icon>logout</mat-icon>
+    </button>
+  </span>
+</div>
+
+<div class="container-box">
+  <div class="container">
+    <div class="form">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nome do Aluno</mat-label>
+        <input matInput placeholder="Nome do Aluno" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>E-mail Institucional</mat-label>
+        <input matInput placeholder="E-mail Institucional" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Matrícula</mat-label>
+        <input matInput placeholder="Matrícula" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Disciplina</mat-label>
+        <input matInput placeholder="Disciplina" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Horas</mat-label>
+        <input matInput placeholder="Horas" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Observação</mat-label>
+        <textarea matInput placeholder="Observação" rows="4"></textarea>
+      </mat-form-field>
+    </div>
+
+    <div class="photo-upload">
+      <div class="upload-box">
+        <p>Arraste e solte seu arquivo nesta área</p>
+        <mat-icon>cloud_upload</mat-icon>
+      </div>
+
+      <div class="actions">
+        <button mat-raised-button color="primary">Aprovar</button>
+        <button mat-raised-button color="warn">Recusar</button>
+      </div>
+    </div>
+  </div>
+</div>

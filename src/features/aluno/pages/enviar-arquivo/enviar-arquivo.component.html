@@ -1,0 +1,61 @@
+<div class="navbar">
+  <div class="logo-container">
+    <img src="assets/img/logo-gac.png" class="logo" alt="Logo" />
+  </div>
+  <span class="title">HORAS COMPLEMENTARES</span>
+  <span style="flex: 0; display: flex; gap: 12px">
+    <button mat-icon-button>
+      <mat-icon>chat</mat-icon>
+    </button>
+
+    <button mat-icon-button>
+      <mat-icon>help_outline</mat-icon>
+    </button>
+
+    <button mat-icon-button>
+      <mat-icon (click)="sair()">logout</mat-icon>
+    </button>
+  </span>
+</div>
+
+<div class="container-box">
+  <div class="container">
+    <div class="form">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Tipo de Atividade</mat-label>
+        <mat-select>
+          <mat-option> </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Ano</mat-label>
+        <input matInput placeholder="Ano" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Horas</mat-label>
+        <input matInput placeholder="Horas" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Observação</mat-label>
+        <textarea matInput placeholder="Observação" rows="4"></textarea>
+      </mat-form-field>
+    </div>
+
+    <div class="photo-upload">
+      <div class="upload-box">
+        <p>Arraste e solte seu arquivo nesta área</p>
+        <mat-icon>cloud_upload</mat-icon>
+      </div>
+
+      <div class="actions">
+        <button mat-raised-button color="primary">Salvar</button>
+        <button mat-raised-button color="warn" (click)="voltar()">
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

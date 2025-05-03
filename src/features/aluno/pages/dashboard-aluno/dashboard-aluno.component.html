@@ -1,0 +1,144 @@
+<div class="navbar">
+  <div class="logo-container">
+    <img src="assets/img/logo-gac.png" class="logo" alt="Logo" />
+  </div>
+  <span class="title">HORAS COMPLEMENTARES</span>
+  <span style="flex: 0; display: flex; gap: 12px">
+    <button mat-icon-button>
+      <mat-icon>chat</mat-icon>
+    </button>
+
+    <button mat-icon-button>
+      <mat-icon>help_outline</mat-icon>
+    </button>
+
+    <button mat-icon-button (click)="sair()">
+      <mat-icon>logout</mat-icon>
+    </button>
+  </span>
+</div>
+
+<div class="container">
+  <div class="table-section">
+    <div class="filters">
+      <mat-form-field appearance="fill">
+        <mat-label>Filtrar por...</mat-label>
+        <mat-select>
+          <mat-option value="">Todos</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="search-field">
+        <mat-label>Buscar por palavra-chave</mat-label>
+        <input matInput />
+        <button mat-icon-button matSuffix>
+          <mat-icon>search</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+
+    <div class="section-title">ATIVIDADES ENVIADAS</div>
+
+    <table
+      mat-table
+      [dataSource]="[]"
+      class="mat-elevation-z1"
+      style="width: 100%"
+    >
+      <ng-container matColumnDef="tipo">
+        <th mat-header-cell *matHeaderCellDef>Tipo</th>
+        <td mat-cell *matCellDef="let el">{{ el.tipo }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="horasAberbadas">
+        <th mat-header-cell *matHeaderCellDef>Horas Aberbadas</th>
+        <td mat-cell *matCellDef="let el">{{ el.horasAverbadas }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="horasEnviadas">
+        <th mat-header-cell *matHeaderCellDef>Horas Enviadas</th>
+        <td mat-cell *matCellDef="let el">{{ el.horasEnviadas }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="ano">
+        <th mat-header-cell *matHeaderCellDef>Ano</th>
+        <td mat-cell *matCellDef="let el">{{ el.ano }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="situacao">
+        <th mat-header-cell *matHeaderCellDef>Situação</th>
+        <td mat-cell *matCellDef="let el">
+          <span [ngClass]="el.situacao.toLowerCase()">{{ el.situacao }}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="acoes">
+        <th mat-header-cell *matHeaderCellDef>Ações</th>
+        <td mat-cell *matCellDef="let el">
+          Ver <span *ngIf="el.editavel">| Editar</span>
+          <span *ngIf="el.cancelavel"
+            >| <span style="color: red">Cancelar</span></span
+          >
+        </td>
+      </ng-container>
+
+      <tr
+        mat-header-row
+        *matHeaderRowDef="[
+          'tipo',
+          'horasAberbadas',
+          'horasEnviadas',
+          'ano',
+          'situacao',
+          'acoes'
+        ]"
+      ></tr>
+      <tr
+        mat-row
+        *matRowDef="
+          let row;
+          columns: [
+            'tipo',
+            'horasAberbadas',
+            'horasEnviadas',
+            'ano',
+            'situacao',
+            'acoes'
+          ]
+        "
+      ></tr>
+    </table>
+
+    <a
+      href="http://www.faeterj-paracambi.com.br/bind/wp-content/uploads/2015/08/Regulamento-das-atividades-complementares-2015.pdf"
+      target="_blank"
+      rel="noopener"
+    >
+      <button mat-stroked-button class="regulamento-button">
+        <mat-icon>menu_book</mat-icon>
+        Regulamento
+      </button>
+    </a>
+
+    <button
+      mat-raised-button
+      color="primary"
+      class="anexar-button"
+      (click)="enviarArquivo()"
+    >
+      Anexar Arquivo <mat-icon>attach_file</mat-icon>
+    </button>
+  </div>
+
+  <mat-card class="profile-card">
+    <mat-card-content>
+      <mat-icon class="avatar">person</mat-icon>
+      <div class="info">
+        <p class="name">Caetano Veloso</p>
+        <p>123123123123</p>
+        <p>ADS</p>
+        <p>Horas Averbadas: 30/100</p>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

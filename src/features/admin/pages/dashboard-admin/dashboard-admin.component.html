@@ -1,0 +1,97 @@
+<div class="navbar">
+  <div class="logo-container">
+    <img src="assets/img/logo-gac.png" class="logo" alt="Logo" />
+  </div>
+  <span class="title">HORAS COMPLEMENTARES</span>
+  <span style="flex: 0; display: flex; gap: 12px">
+    <button mat-icon-button>
+      <mat-icon>chat</mat-icon>
+    </button>
+
+    <button mat-icon-button>
+      <mat-icon>help_outline</mat-icon>
+    </button>
+
+    <button mat-icon-button (click)="sair()">
+      <mat-icon>logout</mat-icon>
+    </button>
+  </span>
+</div>
+
+<div class="container">
+  <div class="table-section">
+    <div class="filters">
+      <mat-form-field appearance="fill">
+        <mat-label>Filtrar por...</mat-label>
+        <mat-select>
+          <mat-option value="">Todos</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="search-field">
+        <mat-label>Buscar por palavra-chave</mat-label>
+        <input matInput />
+        <button mat-icon-button matSuffix>
+          <mat-icon>search</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+
+    <div class="section-title">ATIVIDADES RECEBIDAS</div>
+
+    <table
+      mat-table
+      [dataSource]="[]"
+      class="mat-elevation-z1"
+      style="width: 100%"
+    >
+      <ng-container matColumnDef="nome">
+        <th mat-header-cell *matHeaderCellDef>Nome</th>
+        <td mat-cell *matCellDef="let el">{{ el.nome }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="matricula">
+        <th mat-header-cell *matHeaderCellDef>Matrícula</th>
+        <td mat-cell *matCellDef="let el">{{ el.matricula }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="tipo">
+        <th mat-header-cell *matHeaderCellDef>Tipo</th>
+        <td mat-cell *matCellDef="let el">{{ el.tipo }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="situacao">
+        <th mat-header-cell *matHeaderCellDef>Situacao</th>
+        <td mat-cell *matCellDef="let el">{{ el.situacao }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="acoes">
+        <th mat-header-cell *matHeaderCellDef>Ações</th>
+        <td mat-cell *matCellDef="let el">{{ el.acoes }}</td>
+      </ng-container>
+
+      <tr
+        mat-header-row
+        *matHeaderRowDef="['nome', 'matricula', 'tipo', 'situacao', 'acoes']"
+      ></tr>
+      <tr
+        mat-row
+        *matRowDef="
+          let row;
+          columns: ['nome', 'matricula', 'tipo', 'situacao', 'acoes']
+        "
+      ></tr>
+    </table>
+
+    <a
+      href="http://www.faeterj-paracambi.com.br/bind/wp-content/uploads/2015/08/Regulamento-das-atividades-complementares-2015.pdf"
+      target="_blank"
+      rel="noopener"
+    >
+      <button mat-stroked-button class="regulamento-button">
+        <mat-icon>menu_book</mat-icon>
+        Regulamento
+      </button>
+    </a>
+  </div>
+</div>

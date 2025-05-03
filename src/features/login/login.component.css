@@ -1,0 +1,102 @@
+/* Estilo geral */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to right top, #4a90e2, #ec7d28);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Estilização da div principal */
+.principal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  width: 75%;
+  height: 75%;
+  margin: auto;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+}
+
+/* Divisão para o logo */
+.logo-section {
+  flex: 1; /* Tamanho proporcional */
+  text-align: center;
+  padding: 20px;
+}
+
+.logo-section img {
+  width: 300px;
+  margin-bottom: 10px;
+}
+
+.logo-section h1 {
+  font-size: 1.2rem;
+  background: linear-gradient(to right, #1297e4, #ec7d28);
+  -webkit-background-clip: text;
+  color: transparent;
+  font-size: 40px;
+  font-weight: bold;
+}
+
+/* Divisão para o login */
+.login-container {
+  flex: 1; /* Tamanho proporcional */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Card de login */
+.login-card {
+  width: 100%;
+  max-width: 500px;
+  padding: 20px;
+  text-align: center;
+  border-radius: 12px;
+}
+
+/* Logotipo FAETERJ */
+.faeterj-logo {
+  width: 200px;
+  margin: 0 auto 20px;
+  display: block;
+}
+
+/* Estilo dos campos de entrada */
+.input-field {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+/* Botão principal */
+.login-button {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+/* Botão Google */
+.google-login {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 0.9rem;
+}
+
+.error-message {
+  color: red;
+  font-weight: bold;
+  margin-top: 10px;
+}

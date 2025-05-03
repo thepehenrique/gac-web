@@ -1,0 +1,41 @@
+<mat-toolbar color="primary" class="navbar">
+  <div class="logo-container">
+    <img src="assets/img/logo-gac.png" alt="Logo" class="logo" />
+  </div>
+  <span class="title">CADASTRO DE PROFESSORES</span>
+</mat-toolbar>
+
+<div class="container-box">
+  <div class="container">
+    <div class="form">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nome Completo</mat-label>
+        <input
+          matInput
+          placeholder="Digite seu nome completo sem abreviações"
+          [(ngModel)]="usuario.nome"
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Curso</mat-label>
+        <mat-select [(ngModel)]="usuario.curso">
+          <mat-option *ngFor="let curso of cursos" [value]="curso">
+            {{ curso }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="photo-upload">
+      <div class="upload-box">
+        <p>Arraste e solte sua foto nesta área</p>
+        <mat-icon>cloud_upload</mat-icon>
+      </div>
+
+      <div class="actions">
+        <button mat-raised-button color="primary">Salvar</button>
+      </div>
+    </div>
+  </div>
+</div>

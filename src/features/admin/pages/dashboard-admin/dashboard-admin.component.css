@@ -1,0 +1,113 @@
+body {
+  margin: 0;
+  font-family: Roboto, sans-serif;
+  background-color: #d3d3d3;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  height: 75px;
+  background: linear-gradient(to right, #36b3a8, #007bc0);
+  color: #fff;
+  padding: 0 24px;
+}
+
+button[mat-icon-button] {
+  color: white;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 60px;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: bold;
+  text-transform: uppercase;
+  flex: 1;
+  text-align: center;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 32px;
+  gap: 32px;
+}
+
+.table-section {
+  background-color: white;
+  border-radius: 12px;
+  padding: 24px;
+  width: 70%;
+}
+
+.filters {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-weight: bold;
+  font-size: 20px;
+  color: #0066cc;
+  margin-bottom: 12px;
+}
+
+.agendada {
+  color: orange;
+  font-weight: 600;
+}
+.aprovada {
+  color: green;
+  font-weight: 600;
+}
+.recusada {
+  color: red;
+  font-weight: 600;
+}
+
+.regulamento-button {
+  background-color: #ffc400;
+  color: #000;
+  margin-top: 16px;
+  border: none;
+  font-weight: 500;
+}
+
+.profile-card {
+  width: 220px;
+  padding: 16px;
+  border-radius: 12px;
+  background-color: #f5f5f5;
+  text-align: center;
+}
+
+.avatar {
+  font-size: 48px;
+  color: #757575;
+}
+
+.info .name {
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+.anexar-button {
+  margin-top: 16px;
+  border-radius: 20px;
+  text-transform: none;
+  font-weight: 500;
+}
+
+button[mat-icon-button] {
+  color: white;
+}
