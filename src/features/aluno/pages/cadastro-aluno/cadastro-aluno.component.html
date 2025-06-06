@@ -21,8 +21,8 @@
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Turno</mat-label>
         <mat-select [(ngModel)]="usuario.turno">
-          <mat-option *ngFor="let turno of turnos" [value]="turno">
-            {{ turno }}
+          <mat-option *ngFor="let turno of turnos" [value]="turno.value">
+            {{ turno.label }}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -30,8 +30,8 @@
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Curso</mat-label>
         <mat-select [(ngModel)]="usuario.curso">
-          <mat-option *ngFor="let curso of cursos" [value]="curso">
-            {{ curso }}
+          <mat-option *ngFor="let curso of cursos" [value]="curso.value">
+            {{ curso.label }}
           </mat-option>
         </mat-select>
       </mat-form-field>

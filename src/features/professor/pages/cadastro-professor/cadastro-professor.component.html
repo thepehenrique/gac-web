@@ -20,8 +20,8 @@
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Curso</mat-label>
         <mat-select [(ngModel)]="usuario.curso">
-          <mat-option *ngFor="let curso of cursos" [value]="curso">
-            {{ curso }}
+          <mat-option *ngFor="let curso of cursos" [value]="curso.value">
+            {{ curso.label }}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -34,7 +34,13 @@
       </div>
 
       <div class="actions">
-        <button mat-raised-button color="primary">Salvar</button>
+        <button mat-raised-button color="primary" (click)="atualizarUsuario()">
+          Salvar
+        </button>
+
+        <button mat-raised-button color="warn" (click)="cancelar()">
+          Cancelar
+        </button>
       </div>
     </div>
   </div>

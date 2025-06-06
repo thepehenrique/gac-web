@@ -1,6 +1,6 @@
-export interface UsuarioDto {
+export interface ProfessorDto {
   id?: number;
   nome: string;
-  turno: string;
   curso: string;
+  email?: string;
 }

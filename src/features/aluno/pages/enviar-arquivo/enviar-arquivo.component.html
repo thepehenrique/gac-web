@@ -23,35 +23,83 @@
     <div class="form">
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Tipo de Atividade</mat-label>
-        <mat-select>
-          <mat-option> </mat-option>
+        <mat-select
+          [(ngModel)]="arquivo.idAtividade"
+          [disabled]="somenteLeitura"
+        >
+          <mat-option
+            *ngFor="let atividade of atividades"
+            [value]="atividade.id"
+          >
+            {{ atividade.nome }}
+          </mat-option>
         </mat-select>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Ano</mat-label>
-        <input matInput placeholder="Ano" />
+        <input
+          matInput
+          type="number"
+          placeholder="Ano"
+          [(ngModel)]="arquivo.ano"
+          [disabled]="somenteLeitura"
+          name="ano"
+          required
+        />
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Horas</mat-label>
-        <input matInput placeholder="Horas" />
+        <input
+          matInput
+          type="number"
+          placeholder="Horas"
+          [(ngModel)]="arquivo.horas"
+          [disabled]="somenteLeitura"
+          name="horas"
+          required
+        />
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Observação</mat-label>
-        <textarea matInput placeholder="Observação" rows="4"></textarea>
+        <textarea
+          matInput
+          placeholder="Observação"
+          rows="4"
+          [(ngModel)]="arquivo.observacao"
+          [disabled]="somenteLeitura"
+          name="observacao"
+        ></textarea>
       </mat-form-field>
     </div>
 
     <div class="photo-upload">
-      <div class="upload-box">
-        <p>Arraste e solte seu arquivo nesta área</p>
+      <div
+        class="upload-box"
+        (dragover)="!somenteLeitura && onDragOver($event)"
+        (drop)="!somenteLeitura && onFileDrop($event)"
+        [class.disabled]="somenteLeitura"
+      >
+        <p *ngIf="!somenteLeitura">Arraste e solte seu arquivo nesta área</p>
+        <p *ngIf="somenteLeitura">Visualização do arquivo</p>
+
         <mat-icon>cloud_upload</mat-icon>
+
+        <!-- Exibir o nome do arquivo se houver -->
+        <div *ngIf="fileName">{{ fileName }}</div>
       </div>
 
       <div class="actions">
-        <button mat-raised-button color="primary">Salvar</button>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="enviar()"
+          [disabled]="!selectedFile"
+        >
+          Salvar
+        </button>
         <button mat-raised-button color="warn" (click)="voltar()">
           Cancelar
         </button>

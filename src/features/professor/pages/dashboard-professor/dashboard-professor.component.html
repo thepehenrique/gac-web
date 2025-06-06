@@ -41,66 +41,84 @@
 
     <table
       mat-table
-      [dataSource]="[]"
+      [dataSource]="dataSource"
       class="mat-elevation-z1"
       style="width: 100%"
     >
       <ng-container matColumnDef="aluno">
         <th mat-header-cell *matHeaderCellDef>Aluno</th>
-        <td mat-cell *matCellDef="let el">{{ el.aluno }}</td>
+        <td mat-cell *matCellDef="let el">{{ el.usuario.nome }}</td>
       </ng-container>
 
       <ng-container matColumnDef="curso">
-        <th mat-header-cell *matHeaderCellDef>Curso</th>
-        <td mat-cell *matCellDef="let el">{{ el.curso }}</td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Curso</th>
+        <td mat-cell *matCellDef="let el">
+          <span>{{ getCursoLabel(el.usuario.curso) }}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="matricula">
+        <th mat-header-cell *matHeaderCellDef>Matrícula</th>
+        <td mat-cell *matCellDef="let el">{{ el.usuario?.matricula }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="dimensao">
+        <th mat-header-cell *matHeaderCellDef>Dimensão</th>
+        <td mat-cell *matCellDef="let el">
+          <span>{{ el.atividade.dimensao.nome }}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="atividade">
+        <th mat-header-cell *matHeaderCellDef>Tipo de Atividade</th>
+        <td mat-cell *matCellDef="let el">
+          <span>{{ el.atividade.nome }}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="horasAverbadas">
+        <th mat-header-cell *matHeaderCellDef>Horas Averbadas</th>
+        <td mat-cell *matCellDef="let el">
+          <span>{{ el.horasAverbadas ?? "-" }}</span>
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="situacao">
         <th mat-header-cell *matHeaderCellDef>Situação</th>
-        <td mat-cell *matCellDef="let el">{{ el.situacao }}</td>
+        <td mat-cell *matCellDef="let el">
+          <span>{{ el.situacao.nome }}</span>
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="arquivo">
         <th mat-header-cell *matHeaderCellDef>Arquivo</th>
-        <td mat-cell *matCellDef="let el">{{ el.arquivo }}</td>
+        <td mat-cell *matCellDef="let el">
+          <button
+            mat-button
+            color="primary"
+            (click)="visualizarArquivo(el)"
+            matTooltip="Visualizar Arquivo"
+          >
+            <mat-icon>visibility</mat-icon>
+            Visualizar
+          </button>
+        </td>
       </ng-container>
 
-      <ng-container matColumnDef="acoes">
-        <th mat-header-cell *matHeaderCellDef>Ações</th>
-        <td mat-cell *matCellDef="let el">{{ el.acoes }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="comentar">
-        <th mat-header-cell *matHeaderCellDef>Comentar</th>
-        <td mat-cell *matCellDef="let el">{{ el.comentar }}</td>
-      </ng-container>
-
-      <tr
-        mat-header-row
-        *matHeaderRowDef="[
-          'aluno',
-          'curso',
-          'situacao',
-          'arquivo',
-          'acoes',
-          'comentar'
-        ]"
-      ></tr>
-      <tr
-        mat-row
-        *matRowDef="
-          let row;
-          columns: [
-            'aluno',
-            'curso',
-            'situacao',
-            'arquivo',
-            'acoes',
-            'comentar'
-          ]
-        "
-      ></tr>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
+
+    <!-- ✅ Paginador -->
+    <mat-paginator
+      [length]="totalRegistros"
+      [pageSize]="pageSize"
+      [pageIndex]="pageIndex"
+      [pageSizeOptions]="[5, 10, 20]"
+      (page)="onPageChange($event)"
+      showFirstLastButtons
+    >
+    </mat-paginator>
 
     <a
       href="http://www.faeterj-paracambi.com.br/bind/wp-content/uploads/2015/08/Regulamento-das-atividades-complementares-2015.pdf"

@@ -32,15 +32,34 @@ export class LoginComponent implements OnInit {
       const token = params['token'];
       const usuarioId = params['usuarioId'];
       const novoUsuario = params['novoUsuario'] === 'true';
+      const tipoUsuario = +params['tipoUsuario']; // Convertido para número
 
       if (token && usuarioId) {
         localStorage.setItem('token', token);
         localStorage.setItem('usuarioId', usuarioId);
+        localStorage.setItem('tipoUsuario', tipoUsuario.toString());
 
         if (novoUsuario) {
-          this.router.navigate(['/cadastro-aluno']);
+          if (tipoUsuario === 1) {
+            this.router.navigate(['/dashboard-admin']);
+          } else if (tipoUsuario === 2) {
+            this.router.navigate(['/cadastro-aluno']);
+          } else if (tipoUsuario === 3) {
+            this.router.navigate(['/cadastro-professor']);
+          } else {
+            console.error('Tipo de usuário não suportado para cadastro.');
+            this.router.navigate(['/login']);
+          }
         } else {
-          this.router.navigate(['/dashboard']);
+          if (tipoUsuario === 1) {
+            this.router.navigate(['/dashboard-admin']);
+          } else if (tipoUsuario === 2) {
+            this.router.navigate(['/dashboard-aluno']);
+          } else if (tipoUsuario === 3) {
+            this.router.navigate(['/dashboard-professor']);
+          } else {
+            this.router.navigate(['/login']);
+          }
         }
       } else {
         console.error('Token ou ID de usuário não encontrados na URL.');

@@ -22,45 +22,72 @@
   <div class="container">
     <div class="form">
       <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Nome do Aluno</mat-label>
-        <input matInput placeholder="Nome do Aluno" />
+        <mat-label>Tipo de Atividade</mat-label>
+        <mat-select
+          [(ngModel)]="arquivo.idAtividade"
+          [disabled]="somenteLeitura"
+        >
+          <mat-option
+            *ngFor="let atividade of atividades"
+            [value]="atividade.id"
+          >
+            {{ atividade.nome }}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="full-width">
-        <mat-label>E-mail Institucional</mat-label>
-        <input matInput placeholder="E-mail Institucional" />
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Matrícula</mat-label>
-        <input matInput placeholder="Matrícula" />
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Disciplina</mat-label>
-        <input matInput placeholder="Disciplina" />
+        <mat-label>Dimensão</mat-label>
+        <input matInput placeholder="Dimensão" [disabled]="somenteLeitura" />
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Horas</mat-label>
-        <input matInput placeholder="Horas" />
+        <input
+          matInput
+          type="number"
+          placeholder="Horas"
+          [(ngModel)]="arquivo.horas"
+          [disabled]="somenteLeitura"
+          name="horas"
+          required
+        />
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Observação</mat-label>
-        <textarea matInput placeholder="Observação" rows="4"></textarea>
+        <textarea
+          matInput
+          placeholder="Observação"
+          rows="4"
+          [(ngModel)]="arquivo.observacao"
+          [disabled]="somenteLeitura"
+          name="observacao"
+        ></textarea>
       </mat-form-field>
+
+      <button mat-raised-button (click)="voltar()">Voltar</button>
     </div>
 
     <div class="photo-upload">
-      <div class="upload-box">
-        <p>Arraste e solte seu arquivo nesta área</p>
+      <div
+        class="upload-box"
+        (dragover)="!somenteLeitura && onDragOver($event)"
+        (drop)="!somenteLeitura && onFileDrop($event)"
+        [class.disabled]="somenteLeitura"
+      >
+        <p *ngIf="!somenteLeitura">Arraste e solte seu arquivo nesta área</p>
+        <p *ngIf="somenteLeitura">Visualização do arquivo</p>
+
         <mat-icon>cloud_upload</mat-icon>
+
+        <!-- Exibir o nome do arquivo se houver -->
+        <div *ngIf="fileName">{{ fileName }}</div>
       </div>
 
       <div class="actions">
-        <button mat-raised-button color="primary">Aprovar</button>
-        <button mat-raised-button color="warn">Recusar</button>
+        <button mat-raised-button (click)="modalAprovar()">Aprovar</button>
+        <button mat-raised-button (click)="modalRecusar()">Recusar</button>
       </div>
     </div>
   </div>

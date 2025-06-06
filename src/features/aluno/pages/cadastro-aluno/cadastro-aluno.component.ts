@@ -10,13 +10,13 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CadastroAlunoService } from '../../services/cadastro-aluno.service';
 
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { UsuarioDto } from '../../models/cadastro-aluno.model';
 import { TurnoEnum } from '../../../dominio/enum/turno.enum';
 import { CursoEnum } from '../../../dominio/enum/curso.enum';
 import { AuthService } from '../../../../auth/auth.service';
+import { AlunoService } from '../../services/aluno.service';
 
 @Component({
   selector: 'app-cadastro-aluno',
@@ -36,8 +36,18 @@ import { AuthService } from '../../../../auth/auth.service';
   styleUrls: ['./cadastro-aluno.component.css'],
 })
 export class CadastroAlunoComponent implements OnInit {
-  turnos = Object.values(TurnoEnum);
-  cursos = Object.values(CursoEnum);
+  turnos = [
+    { label: 'Manhã', value: TurnoEnum.MANHA },
+    { label: 'Noite', value: TurnoEnum.NOITE },
+  ];
+
+  cursos = [
+    { label: 'Gestão Ambiental', value: CursoEnum.GESTAO_AMBIENTAL },
+    {
+      label: 'Análise e Desenvolvimento de Sistemas',
+      value: CursoEnum.ANALISE_DES_SISTEMA,
+    },
+  ];
 
   usuario: UsuarioDto = {
     nome: '',
@@ -47,15 +57,10 @@ export class CadastroAlunoComponent implements OnInit {
 
   jwtHelper: JwtHelperService = new JwtHelperService();
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private cadastroAlunoService: CadastroAlunoService,
-    private authService: AuthService
-  ) {}
+  constructor(private router: Router, private alunoService: AlunoService) {}
 
   carregarUsuario(id: number): void {
-    this.cadastroAlunoService.buscarPorId(id).subscribe({
+    this.alunoService.buscarPorId(id).subscribe({
       next: (usuario) => {
         this.usuario = usuario;
       },
@@ -98,17 +103,15 @@ export class CadastroAlunoComponent implements OnInit {
       return;
     }
 
-    this.cadastroAlunoService
-      .atualizar(this.usuario.id, this.usuario)
-      .subscribe({
-        next: () => {
-          alert('Cadastro atualizado com sucesso!');
-          this.router.navigate(['/dashboard']); // ou outra tela principal
-        },
-        error: (err) => {
-          console.error('Erro ao atualizar', err);
-          alert('Erro ao atualizar cadastro.');
-        },
-      });
+    this.alunoService.atualizar(this.usuario.id, this.usuario).subscribe({
+      next: () => {
+        alert('Cadastro atualizado com sucesso!');
+        this.router.navigate(['/dashboard-aluno']); // ou outra tela principal
+      },
+      error: (err) => {
+        console.error('Erro ao atualizar', err);
+        alert('Erro ao atualizar cadastro.');
+      },
+    });
   }
 }

@@ -13,9 +13,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { UsuarioDto } from '../../models/cadastro-professor.model';
+import { ProfessorDto } from '../../models/cadastro-professor.model';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../auth/auth.service';
+import { TurnoEnum } from '../../../dominio/enum/turno.enum';
+import { CursoEnum } from '../../../dominio/enum/curso.enum';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { AlunoService } from '../../../aluno/services/aluno.service';
+import { ProfessorService } from '../../services/professor.service';
 
 @Component({
   selector: 'app-cadastro-professor',
@@ -34,50 +39,86 @@ import { AuthService } from '../../../../auth/auth.service';
   styleUrl: './cadastro-professor.component.css',
 })
 export class CadastroProfessorComponent implements OnInit {
-  cadastroForm: FormGroup;
-  token: string | null = null;
-
-  usuario: UsuarioDto = {
+  usuario: ProfessorDto = {
     nome: '',
-    turno: '',
     curso: '',
   };
 
-  turnos = ['MANHA', 'TARDE', 'NOITE']; // Ajuste de acordo com seu `TurnoEnum`
   cursos = [
-    'Gestão Ambiental',
-    'Sistemas de Informação',
-    'Análise e Desenvolvimento de Sistemas',
-  ]; // Ajuste conforme `CursoEnum`
+    { label: 'Gestão Ambiental', value: CursoEnum.GESTAO_AMBIENTAL },
+    {
+      label: 'Análise e Desenvolvimento de Sistemas',
+      value: CursoEnum.ANALISE_DES_SISTEMA,
+    },
+  ];
+
+  jwtHelper: JwtHelperService = new JwtHelperService();
 
   constructor(
-    private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
-  ) {
-    this.cadastroForm = this.fb.group({
-      nome: ['', [Validators.required, Validators.maxLength(100)]],
-      turno: ['', Validators.required],
-      curso: ['', Validators.required],
+    private router: Router,
+    private service: ProfessorService
+  ) {}
+
+  carregarUsuario(id: number): void {
+    this.service.buscarPorId(id).subscribe({
+      next: (usuario) => {
+        this.usuario = usuario;
+      },
+      error: (err) => {
+        console.error('Erro ao buscar usuário:', err);
+      },
     });
   }
 
   ngOnInit(): void {
-    this.token = localStorage.getItem('token');
+    const token = localStorage.getItem('token');
+    const usuarioId = localStorage.getItem('usuarioId');
+
+    if (token && usuarioId) {
+      const decodedToken: any = this.jwtHelper.decodeToken(token);
+
+      if (decodedToken && decodedToken.email && decodedToken.nome) {
+        this.usuario.id = +usuarioId;
+        this.usuario.email = decodedToken.email;
+        this.usuario.nome = decodedToken.nome;
+
+        console.log('Usuário inicial:', this.usuario);
+
+        this.carregarUsuario(this.usuario.id);
+      } else {
+        console.warn('Token inválido ou incompleto:', decodedToken);
+      }
+    } else {
+      console.warn('Token ou ID do usuário não encontrados no localStorage.');
+    }
   }
 
-  salvarCadastro() {
-    if (this.cadastroForm.valid && this.token) {
-      this.authService.atualizarUsuario(this.cadastroForm.value).subscribe({
-        next: () => {
-          alert('Cadastro atualizado com sucesso!');
-          this.router.navigate(['/usuario']);
-        },
-        error: (err) => {
-          console.error('Erro ao cadastrar:', err);
-          alert('Erro ao cadastrar usuário.');
-        },
-      });
+  atualizarUsuario() {
+    if (!this.usuario.id || !this.usuario.email) {
+      alert('Dados do usuário estão incompletos.');
+      return;
     }
+
+    const payload = {
+      nome: this.usuario.nome,
+      curso: this.usuario.curso,
+      // Adicione aqui apenas os campos permitidos pelo DTO no backend.
+    };
+
+    this.service.atualizar(this.usuario.id, payload).subscribe({
+      next: () => {
+        alert('Cadastro atualizado com sucesso!');
+        this.router.navigate(['/dashboard-professor']);
+      },
+      error: (err) => {
+        console.error('Erro ao atualizar', err);
+        alert('Erro ao atualizar cadastro.');
+      },
+    });
+  }
+
+  cancelar(): void {
+    this.router.navigate(['/login']);
   }
 }
