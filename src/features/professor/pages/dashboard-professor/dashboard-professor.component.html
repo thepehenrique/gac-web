@@ -23,15 +23,31 @@
     <div class="filters">
       <mat-form-field appearance="fill">
         <mat-label>Filtrar por...</mat-label>
-        <mat-select>
+        <mat-select [(ngModel)]="filtros.tipo" name="tipo">
           <mat-option value="">Todos</mat-option>
+          <mat-option value="aluno">Aluno</mat-option>
+          <mat-option value="curso">Curso</mat-option>
+          <mat-option value="matricula">Matrícula</mat-option>
+          <mat-option value="tipo">Tipo de Atividade</mat-option>
+          <mat-option value="dimensao">Dimensão</mat-option>
+          <mat-option value="horas">Horas Averbadas</mat-option>
+          <mat-option value="situacao">Situação</mat-option>
         </mat-select>
       </mat-form-field>
 
       <mat-form-field appearance="fill" class="search-field">
         <mat-label>Buscar por palavra-chave</mat-label>
-        <input matInput />
-        <button mat-icon-button matSuffix>
+        <input
+          matInput
+          [(ngModel)]="filtros.palavraChave"
+          name="palavraChave"
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="aplicarFiltros()"
+          matTooltip="Buscar"
+        >
           <mat-icon>search</mat-icon>
         </button>
       </mat-form-field>
@@ -50,12 +66,12 @@
         <td mat-cell *matCellDef="let el">{{ el.usuario.nome }}</td>
       </ng-container>
 
-      <ng-container matColumnDef="curso">
+      <!-- <ng-container matColumnDef="curso">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Curso</th>
         <td mat-cell *matCellDef="let el">
           <span>{{ getCursoLabel(el.usuario.curso) }}</span>
         </td>
-      </ng-container>
+      </ng-container> -->
 
       <ng-container matColumnDef="matricula">
         <th mat-header-cell *matHeaderCellDef>Matrícula</th>
@@ -84,9 +100,9 @@
       </ng-container>
 
       <ng-container matColumnDef="situacao">
-        <th mat-header-cell *matHeaderCellDef>Situação</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Situação</th>
         <td mat-cell *matCellDef="let el">
-          <span>{{ el.situacao.nome }}</span>
+          <span>{{ getSituacaoLabel(el.situacao) }}</span>
         </td>
       </ng-container>
 

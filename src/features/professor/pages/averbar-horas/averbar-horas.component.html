@@ -76,18 +76,53 @@
         (drop)="!somenteLeitura && onFileDrop($event)"
         [class.disabled]="somenteLeitura"
       >
-        <p *ngIf="!somenteLeitura">Arraste e solte seu arquivo nesta área</p>
-        <p *ngIf="somenteLeitura">Visualização do arquivo</p>
+        <p *ngIf="!somenteLeitura">Arraste e solte seu arquivo PDF aqui</p>
+        <p *ngIf="somenteLeitura && fileName">Visualização do PDF</p>
 
         <mat-icon>cloud_upload</mat-icon>
 
-        <!-- Exibir o nome do arquivo se houver -->
         <div *ngIf="fileName">{{ fileName }}</div>
+
+        <!-- Botão de download + iframe para visualização -->
+        <div *ngIf="somenteLeitura && fileName" class="preview-section">
+          <a
+            mat-stroked-button
+            color="primary"
+            [href]="getDownloadUrl()"
+            target="_blank"
+            download
+          >
+            <mat-icon>download</mat-icon>
+            Baixar PDF
+          </a>
+
+          <a
+            mat-stroked-button
+            color="primary"
+            [href]="getDownloadUrl()"
+            target="_blank"
+          >
+            <mat-icon>visibility</mat-icon>
+            Visualizar PDF
+          </a>
+        </div>
       </div>
 
       <div class="actions">
-        <button mat-raised-button (click)="modalAprovar()">Aprovar</button>
-        <button mat-raised-button (click)="modalRecusar()">Recusar</button>
+        <button
+          mat-raised-button
+          (click)="modalAprovar()"
+          [disabled]="finalizado"
+        >
+          Aprovar
+        </button>
+        <button
+          mat-raised-button
+          (click)="modalRecusar()"
+          [disabled]="finalizado"
+        >
+          Recusar
+        </button>
       </div>
     </div>
   </div>

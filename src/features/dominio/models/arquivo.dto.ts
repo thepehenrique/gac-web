@@ -1,3 +1,5 @@
+import { SituacaoEnum } from '../enum/situacao.enum';
+
 export interface ArquivoDto {
   id?: number;
   idAtividade: number;
@@ -6,4 +8,5 @@ export interface ArquivoDto {
   horasAverbadas?: number;
   observacao: string;
   caminho_arquivo?: string;
+  situacao?: SituacaoEnum;
 }

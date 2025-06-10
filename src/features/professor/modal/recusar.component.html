@@ -1,23 +1,23 @@
 <div class="modal-container">
   <h2 class="titulo">Motivo da Recusa</h2>
-  <div class="formulario">
+  <form [formGroup]="form" class="formulario">
     <mat-form-field appearance="outline" class="campo-horas">
-      <mat-label>Observação</mat-label>
+      <mat-label>Comentário</mat-label>
       <textarea
         matInput
-        [(ngModel)]="observacao"
-        placeholder="motivo"
+        formControlName="comentario"
+        placeholder="Descreva o motivo"
         rows="4"
       ></textarea>
     </mat-form-field>
 
     <button
       mat-raised-button
-      color="primary"
-      class="confirmar"
-      (click)="confirmar()"
+      color="warn"
+      (click)="recusar()"
+      [disabled]="form.invalid"
     >
       Confirmar
     </button>
-  </div>
+  </form>
 </div>

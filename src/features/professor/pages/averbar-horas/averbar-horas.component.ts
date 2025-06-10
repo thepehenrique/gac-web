@@ -24,11 +24,15 @@ import { CursoEnum } from '../../../dominio/enum/curso.enum';
 import { ArquivoDto } from '../../../dominio/models/arquivo.dto';
 import { AlunoService } from '../../../aluno/services/aluno.service';
 import { MatDialog } from '@angular/material/dialog';
-import { AprovarComponent } from '../../modal/aprovar.component';
 import { RecusarComponent } from '../../modal/recusar.component';
+import { AprovarComponent } from '../../modal/aprovar.component';
+import { SituacaoEnum } from '../../../dominio/enum/situacao.enum';
+import { ProfessorService } from '../../services/professor.service';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-averbar-horas',
+  standalone: true,
   imports: [
     CommonModule,
     FormsModule,
@@ -54,6 +58,7 @@ export class AverbarHorasComponent implements OnInit {
     ano: 0,
     horas: 0,
     observacao: '',
+    situacao: SituacaoEnum.EM_ANALISE,
   };
 
   usuario: UsuarioDto = {
@@ -69,19 +74,18 @@ export class AverbarHorasComponent implements OnInit {
     private route: ActivatedRoute,
     private service: DominioService,
     private alunoService: AlunoService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private professorService: ProfessorService,
+    private sanitizer: DomSanitizer
   ) {}
 
-  carregarUsuario(usuarioId: number): void {
-    this.service.buscarPorId(usuarioId).subscribe({
-      next: (res) => {
-        this.usuario = res;
-      },
-      error: () => {
-        console.error('Erro ao buscar dados do usuário');
-      },
-    });
+  get finalizado(): boolean {
+    return (
+      this.arquivo.situacao === SituacaoEnum.APROVADO ||
+      this.arquivo.situacao === SituacaoEnum.RECUSADO
+    );
   }
+
   ngOnInit(): void {
     const token = localStorage.getItem('token');
     const usuarioId = localStorage.getItem('usuarioId');
@@ -94,14 +98,8 @@ export class AverbarHorasComponent implements OnInit {
         this.usuario.email = decodedToken.email;
         this.usuario.nome = decodedToken.nome;
 
-        console.log('Usuário inicial:', this.usuario);
-
         this.carregarUsuario(this.usuario.id);
-      } else {
-        console.warn('Token inválido ou incompleto:', decodedToken);
       }
-    } else {
-      console.warn('Token ou ID do usuário não encontrados no localStorage.');
     }
 
     this.alunoService.getAtividades().subscribe({
@@ -113,7 +111,6 @@ export class AverbarHorasComponent implements OnInit {
       },
     });
 
-    // Verifica se veio ID na rota
     this.route.queryParams.subscribe((params) => {
       const arquivoId = params['id'];
       const readonly = params['readonly'];
@@ -128,17 +125,31 @@ export class AverbarHorasComponent implements OnInit {
     });
   }
 
+  carregarUsuario(usuarioId: number): void {
+    this.service.buscarPorId(usuarioId).subscribe({
+      next: (res) => {
+        this.usuario = res;
+      },
+      error: () => {
+        console.error('Erro ao buscar dados do usuário');
+      },
+    });
+  }
+
   carregarArquivo(id: number) {
     this.alunoService.getArquivoPorId(id).subscribe({
       next: (dados) => {
+        console.log('📄 Dados do arquivo recebido:', dados);
+
         this.arquivo = {
           idAtividade: dados.idAtividade,
           ano: dados.ano,
           horas: dados.horas,
           observacao: dados.observacao,
+          situacao: dados.situacao,
         };
-        this.fileName = dados.caminho_arquivo ?? null;
-        // Aqui você decide se quer preencher também selectedFile, mas normalmente não é necessário para apenas visualizar.
+
+        this.fileName = dados.caminho_arquivo ?? null; // <- IMPORTANTE
       },
       error: (err) => {
         console.error('Erro ao carregar arquivo:', err);
@@ -150,7 +161,6 @@ export class AverbarHorasComponent implements OnInit {
     this.router.navigate(['/dashboard-professor']);
   }
 
-  // Evento de dragover para permitir o drop
   onDragOver(event: DragEvent) {
     event.preventDefault();
   }
@@ -173,7 +183,6 @@ export class AverbarHorasComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result !== undefined) {
         console.log('Horas confirmadas:', result);
-        // Aqui você pode salvar ou enviar os dados
       }
     });
   }
@@ -186,8 +195,18 @@ export class AverbarHorasComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result !== undefined) {
         console.log('Motivo da recusa:', result);
-        // Aqui você pode salvar ou enviar os dados
       }
     });
+  }
+
+  getDownloadUrl(): string | null {
+    if (!this.fileName) return null;
+    return this.professorService.getDownloadUrl(this.fileName);
+  }
+
+  getFileUrl(): SafeResourceUrl | null {
+    if (!this.fileName) return null;
+    const url = this.professorService.getDownloadUrl(this.fileName);
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 }

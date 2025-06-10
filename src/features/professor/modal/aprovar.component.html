@@ -1,18 +1,14 @@
-<div class="modal-container">
-  <h2 class="titulo">Quantidade de Horas a serem averbadas</h2>
-  <div class="formulario">
-    <mat-form-field appearance="outline" class="campo-horas">
-      <mat-label>Horas</mat-label>
-      <input matInput type="number" [(ngModel)]="horas" placeholder="20" />
+<div class="averbar-container">
+  <h2>Averbar Horas</h2>
+
+  <form [formGroup]="form">
+    <mat-form-field appearance="fill">
+      <mat-label>Horas Averbadas</mat-label>
+      <input matInput formControlName="horasAverbadas" type="number" />
     </mat-form-field>
 
-    <button
-      mat-raised-button
-      color="primary"
-      class="confirmar"
-      (click)="confirmar()"
-    >
-      Confirmar
+    <button mat-raised-button color="primary" (click)="aprovar()">
+      Aprovar
     </button>
-  </div>
+  </form>
 </div>

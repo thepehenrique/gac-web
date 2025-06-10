@@ -116,3 +116,16 @@ button[mat-raised-button] {
   font-weight: bold;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
+.preview-pdf {
+  width: 100%;
+  height: 400px;
+  margin-top: 10px;
+}
+
+.preview-section {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

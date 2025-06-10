@@ -20,6 +20,8 @@ import {
 import { ProfessorService } from '../../services/professor.service';
 import { UsuarioDto } from '../../../aluno/models/cadastro-aluno.model';
 import { CursoEnum } from '../../../dominio/enum/curso.enum';
+import { SituacaoEnum } from '../../../dominio/enum/situacao.enum';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-dashboard-professor',
@@ -36,6 +38,7 @@ import { CursoEnum } from '../../../dominio/enum/curso.enum';
     MatTableModule,
     MatButtonToggleModule,
     MatPaginatorModule,
+    FormsModule,
   ],
   templateUrl: './dashboard-professor.component.html',
   styleUrl: './dashboard-professor.component.css',
@@ -53,6 +56,17 @@ export class DashboardProfessorComponent implements OnInit {
     },
   ];
 
+  situacoes = [
+    { label: 'Em Análise', value: SituacaoEnum.EM_ANALISE },
+    { label: 'Aprovado', value: SituacaoEnum.APROVADO },
+    { label: 'Recusado', value: SituacaoEnum.RECUSADO },
+  ];
+
+  getSituacaoLabel(value: SituacaoEnum): string {
+    const situacao = this.situacoes.find((s) => s.value === value);
+    return situacao ? situacao.label : value;
+  }
+
   getCursoLabel(value: CursoEnum): string {
     const curso = this.cursos.find((s) => s.value === value);
     return curso ? curso.label : value;
@@ -64,9 +78,15 @@ export class DashboardProfessorComponent implements OnInit {
   pageSize = 5;
   pageIndex = 0;
 
+  filtros = {
+    tipo: '', // valor do mat-select
+    palavraChave: '', // valor do input de busca
+    page: 0, // página atual
+    size: 5, // tamanho da página
+  };
+
   displayedColumns: string[] = [
     'aluno',
-    'curso',
     'matricula',
     'atividade',
     'dimensao',
@@ -111,6 +131,25 @@ export class DashboardProfessorComponent implements OnInit {
   }
 
   carregarAtividades(pageStart: number, pageSize: number): void {
+    const filtros = {
+      tipo: this.filtros.tipo || null,
+      palavraChave: this.filtros.palavraChave || null,
+      page: pageStart,
+      size: pageSize,
+    };
+
+    this.service.getAllArquivo(pageStart, pageSize).subscribe({
+      next: (response) => {
+        this.dataSource = response.content || [];
+        this.totalRegistros = response.totalRecords || 0;
+      },
+      error: (err) => {
+        console.error('Erro ao buscar arquivos:', err);
+      },
+    });
+  }
+
+  /* carregarAtividades(pageStart: number, pageSize: number): void {
     this.service.getAllArquivo(pageStart, pageSize).subscribe({
       next: (response) => {
         console.log('Atividades recebidas:', response.content); // <-- Aqui
@@ -121,7 +160,7 @@ export class DashboardProfessorComponent implements OnInit {
         console.error('Erro ao buscar arquivos:', err);
       },
     });
-  }
+  } */
 
   sair(): void {
     localStorage.removeItem('token');
@@ -144,5 +183,10 @@ export class DashboardProfessorComponent implements OnInit {
     this.router.navigate(['/averbar-horas'], {
       queryParams: { id: arquivo.id },
     });
+  }
+
+  aplicarFiltros(): void {
+    this.pageIndex = 0; // sempre volta para primeira página ao aplicar filtro
+    this.carregarAtividades(this.pageIndex, this.pageSize);
   }
 }

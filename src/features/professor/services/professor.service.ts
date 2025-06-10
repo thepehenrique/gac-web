@@ -4,6 +4,7 @@ import { ProfessorDto } from '../models/cadastro-professor.model';
 import { Observable } from 'rxjs';
 import { PaginationQueryResponseDto } from '../../aluno/models/pagination.model';
 import { ArquivoDto } from '../../dominio/models/arquivo.dto';
+import { SituacaoEnum } from '../../dominio/enum/situacao.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -36,9 +37,26 @@ export class ProfessorService {
     );
   }
 
-  atualizarSituacaoArquivo(id: number, aprovado: boolean): Observable<number> {
-    return this.http.put<number>(`${this.URL_API}/${id}/situacao`, {
-      aprovado,
-    });
+  atualizarSituacaoArquivo(
+    id: number,
+    aprovado: boolean,
+    horasAverbadas?: number,
+    comentario?: string
+  ): Observable<number> {
+    const body: any = {
+      aprovado, // É isso que o backend espera
+    };
+
+    if (aprovado) {
+      body.horasAverbadas = horasAverbadas;
+    } else {
+      body.comentario = comentario;
+    }
+
+    return this.http.put<number>(`${this.URL_API}/${id}/situacao`, body);
+  }
+
+  getDownloadUrl(fileName: string): string {
+    return `${this.URL_API}/download/${fileName}`;
   }
 }
